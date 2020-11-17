@@ -4,12 +4,8 @@ body {
     background-image: linear-gradient(0deg, rgba(243,243,243,1) 0%, rgba(167,167,167,1) 50%, rgba(243,243,243,1) 100%);
     
 }
-img {
-    width: 15%;
-    height: 15%;
-    float: right; 
-    margin: 7px 0 7px 7px; 
-}
+
+
 p {
     text-indent: 40px
 }
@@ -21,8 +17,52 @@ h1{
     height: 100vh;
     background-image: linear-gradient(0deg, rgba(243,243,243,1) 0%, rgba(167,167,167,1) 50%, rgba(243,243,243,1) 100%);
 }*/
-.container {
+
+.image-in-text{
+    width: 15%;
+    height: 15%;
+    float: right; 
+    margin: 7px 0 7px 7px;  
+}
+
+.image-on-button{
+   width: 100%;
+   position:absolute;
+   right:-12px;
+}
+
+.side-panel{
     
+    width: 300px;
+    height: 100vh;
+
+    position: absolute;
+    
+    z-index: 110;
+    position: fixed;
+    display:block;  
+    background-color:  rgba(33,33,33,1);
+    
+    top:0px;
+    left:-300px;
+}
+.side-button
+{    
+    position:relative;
+    border-radius: 30px;
+    z-index: 100;
+    position: fixed;
+    display:block;
+    height: 100px;
+    width:  100px;
+    background-color:  rgba(33,33,33,1);
+    top: 40vh;
+    left:-30px;
+    transition
+}
+
+.container {
+
     width: 90%;
     height: auto;
     position: relative;
@@ -52,6 +92,7 @@ h1{
     height: 40vh;
     background-color: rgba(44,44,44,1);
 }
+
 .menu {
     width: 15%;
     background-color: rgba(66,66,66,1);    
@@ -62,18 +103,9 @@ h1{
     bottom: 0px;    
     right: 0px;
 }
-.sidebar
-{
-    border-radius: 30px;
-    z-index: 100;
-    position: fixed;
-    display:block;
-    height: 100px;
-    width:  100px;
-    background-color: rgba(44,44,44,1);
-    top: 40vh;
-    left:-50px;
-}
+
+
+
 .menuButton {    
     border:0px;
     text-decoration: none;
@@ -88,6 +120,7 @@ h1{
     color: #01aeff;
     transition: color,background-color .2s linear;
 }
+
 .menuButton:after {
     content: " ";
     display: block;
@@ -102,8 +135,6 @@ h1{
     background-color: rgba(33,33,33,1);
     color: #01d2ff;
 }
-
-
 
 .text {
     white-space: normal
