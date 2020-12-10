@@ -1,67 +1,46 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
-    <link rel="stylesheet" href="style.css">
+    <meta charset="utf-8">    
     <link rel="stylesheet" href="editor.css">
     <link href="https://fonts.googleapis.com/css2?family=Kaushan+Script&family=Montserrat&display=swap" rel="stylesheet">
     <title>Редактор</title>
+    
 </head>
-<body>
+<body>       
 
-    <div class="header">
-        <p class="label">Art-space</p>
-    </div>
-
-
-    <div class="side-panel" id="sidePanel">
-
-    </div>
-
-    <div class="side-button" id="sideButton">
-        <img src="Arrows.png" class="image-on-button">
-    </div>
-
-
-    <div class="container">
-
-
-        <div class="menu">
-            <input class="menuButton" value="Главная" type="button" onclick="location.href='index.html'" />
-            <input class="menuButton" value="Редактор" type="button" onclick="location.href='photoEditor.html'" />
-            <input class="menuButton" value="Инфо" type="button" onclick="location.href='index.html'" />
+        
+        <div id="drop-area">
+            <form class="my-form">
+                <p>Загрузите изображения с помощью диалога выбора файлов или перетащив нужные изображения в выделенную область</p>
+                <input type="file" id="files" name="files[]">
+                <label class="button" for="fileElem">Выбрать изображения</label>
+            </form>
         </div>
-
-        <div class="wrapper">
-            <main class="main">
-                <div class="main__content">
-                    <div class="avatar">
-                        <img id="image" class="image">
-                        <canvas id="canvas" class="canvas">
-                            Your browser does not support JS or HTML5!
-                        </canvas>
-                    </div>
-                    <p>
-                        <input type="number" name="widthBox" id="widthBox" value="100" min="100" title="Width">
-                        ×
-                        <input type="number" name="heightBox" id="heightBox" value="100" min="100" title="Height">
-                    </p>
-                    <p>
-                        <label>Top: <input type="number" name="topBox" id="topBox" value="0" min="0" title="Top"> </label><br><br>
-                        <label>Left: <input type="number" name="leftBox" id="leftBox" value="0" min="0" title="Left"></label>
-                    </p>
-                    <p>
-                        <button class="button" id="saveBtn">Save</button>
-                    </p>
-                    <p>
-                        <a href="images/newphoto.jpg" target="_blank" class="a a_hidden" id="newImg">Open new photo</a>
-                    </p>
-                </div>
-            </main>
-        </div>
-    </div>
-    <script src="menu.js"></script>
-    <script scr="photoEditor.js"></script>
-
+        
+        <canvas id="canvas" class="canvas">
+                        
+        </canvas>
+                    
+        
+        <p>
+            <input type="number" name="widthBox" id="widthBox" value="100" min="100" title="Width">
+            ×
+            <input type="number" name="heightBox" id="heightBox" value="100" min="100" title="Height">
+        </p>
+        <p>
+            <label>Top: <input type="number" name="topBox" id="topBox" value="0" min="0" title="Top"> </label>
+        </p>
+        <p>
+            <label>Left: <input type="number" name="leftBox" id="leftBox" value="0" min="0" title="Left"></label>
+        </p>
+        <p>
+            <button class="button" id="saveBtn">Save</button>
+        </p>
+        <p>
+            <a href="photo.jpg" target="_blank" class="a a_hidden" id="newImg">Open new photo</a>
+        </p>                
+           
+    <script src="photoEditor.js"></script>
 </body>
 </html>
