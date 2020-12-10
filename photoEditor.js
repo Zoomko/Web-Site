@@ -1,6 +1,7 @@
 //Холст и его контекст
 
 const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
 
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
@@ -13,6 +14,11 @@ const leftBox = document.getElementById("leftBox");
 const saveButton = document.getElementById("saveBtn");
 
 var photo = new Image();
+
+photo.addEventListener("load", function(){
+    ctx.drawImage(photo, 0, 0);  
+    console.log("Hi");
+})
 
 saveButton.addEventListener("click", function () { saveImage(); })
 
@@ -31,17 +37,13 @@ document.getElementById('files').addEventListener('change', onLoad , false);
 
 //--------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------
-function Init() {
-	console.log("Hi");
-	
 
-}
 function onLoad(e) {
     
     var files = e.target.files;
     var file = files[0];
 
-    var ctx = canvas.getContext("2d");
+    
     var fileReader = new FileReader();
     
 
@@ -58,12 +60,11 @@ function onLoad(e) {
     } else {
         photo.src = "";
     }
-    ctx.drawImage(photo, 0, 0);
-    canvas.width = 150;
-    canvas.height = 150;
     
     
 }
+
+
 function OnChangeWidth() {
     canvas.width = widthBox.value;
 }
