@@ -37,9 +37,8 @@
     border: 1px solid #ccc;
 }
 .canvas {
-             
-    display: block;     
-    
+    display: block;
+    margin: 100px auto;
     background: #000;
 }
 

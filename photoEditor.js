@@ -15,9 +15,15 @@ const saveButton = document.getElementById("saveBtn");
 
 var photo = new Image();
 
-photo.addEventListener("load", function(){
-    ctx.drawImage(photo, 0, 0);  
-    console.log("Hi");
+photo.addEventListener("load", function () {
+    canvas.width = photo.width;
+    canvas.height = photo.height;
+    SetRectValues(photo.width, photo.height);
+    Draw();
+    //RotateLeft();
+    //RotateRight();
+         
+    
 })
 
 saveButton.addEventListener("click", function () { saveImage(); })
@@ -29,6 +35,14 @@ heightBox.addEventListener('change', OnChangeHeight, false);
 document.getElementById('files').addEventListener('change', onLoad , false);
 
 
+function SetRectValues(width, height) {
+    widthBox.value = width;
+    heightBox.value = height;
+}
+
+function Draw() {
+    ctx.drawImage(photo, 0, 0, widthBox.value,heightBox.value); 
+}
 
 
 //document.addEventListener("resize", function () { OnResize(); });
@@ -50,7 +64,7 @@ function onLoad(e) {
     fileReader.onload = (function (file) {
 
         return function (e) {            
-            photo.src = fileReader.result;
+            photo.src = fileReader.result;            
         };
 
     })(file);
@@ -60,26 +74,41 @@ function onLoad(e) {
     } else {
         photo.src = "";
     }
+
     
     
 }
 
 
 function OnChangeWidth() {
-    canvas.width = widthBox.value;
+    canvas.width = widthBox.value;    
+    Draw();
 }
 
 function OnChangeHeight() {
     canvas.height = heightBox.value;
+    Draw();
 }
 
+function RotateLeft() {
+    canvas.width = photo.height;
+    canvas.height = photo.width;
+    ctx.rotate(inRad(-90));
+    ctx.translate(-photo.width, 0); 
+    photo = canvas.toDataURL("image/jpeg");
+    ctx.drawImage(photo, 0, 0); 
+}
 function RotateRight() {
-	ctx.rotate(inRad(90));
-	
+    canvas.width = photo.height;
+    canvas.height = photo.width;
+    ctx.rotate(inRad(90));    
+    ctx.translate(0, -photo.height);  
+    photo = canvas.toDataURL("image/jpeg");
+    ctx.drawImage(photo, 0, 0); 
 }
 
 function inRad(num) {
-	//я ведь говорил, что функция принимает угол в радианах?
+	
 	return num * Math.PI / 180;
 }
 
