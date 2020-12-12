@@ -9,6 +9,8 @@ const leftBox = document.getElementById("leftBox");
 
 const leftButton = document.getElementById("rotateLeftButton");
 const rightButton = document.getElementById("rotateRightButton");
+const flipVerticallyButton = document.getElementById("flipVerticallyButton");
+const flipHorizontallyButton = document.getElementById("flipHorizontallyButton");
 
 const saveButton = document.getElementById("saveBtn");
 
@@ -32,6 +34,8 @@ photo.addEventListener("load", function () {
 
 });
 
+flipVerticallyButton.addEventListener("click", function () { FlipVertically(); });
+flipHorizontallyButton.addEventListener("click", function () { FlipHorizontally(); });
 rightButton.addEventListener("click", function () { RotateRight(); });
 leftButton.addEventListener("click", function () { RotateLeft(); });
 saveButton.addEventListener("click", function () { saveImage(); });
@@ -39,11 +43,6 @@ widthBox.addEventListener('change', OnChangeRect, false);
 heightBox.addEventListener('change', OnChangeRect, false);
 document.getElementById('files').addEventListener('change', onLoad , false);
 
-
-
-
-
-//document.addEventListener("resize", function () { OnResize(); });
 
 
 function onLoad(e) {
@@ -119,9 +118,22 @@ function RotateRight() {
     newPhoto.src = oCanvas.toDataURL("image/jpeg");    
 }
 
-function inRad(num) {
-	
-	return num * Math.PI / 180;
+function FlipVertically()
+{
+    AssignNewCanvas();
+    oCtx.scale(1, -1);
+    oCtx.translate(0, -oCanvas.height);
+    oCtx.drawImage(photo, 0, 0, widthBox.value, heightBox.value);
+    newPhoto.src = oCanvas.toDataURL("image/jpeg");  
+}
+
+function FlipHorizontally()
+{
+    AssignNewCanvas();
+    oCtx.scale(-1, 1);
+    oCtx.translate(-oCanvas.width, 0);
+    oCtx.drawImage(photo, 0, 0, widthBox.value, heightBox.value);
+    newPhoto.src = oCanvas.toDataURL("image/jpeg");  
 }
 
 function saveImage() {
@@ -167,4 +179,9 @@ function removeColors() {
         oColorImg.style.display = "none";
         oColorImg.parentNode.insertBefore(oGrayImg, oColorImg);
     }
+
+}
+
+function inRad(num) {
+    return num * Math.PI / 180;
 }
