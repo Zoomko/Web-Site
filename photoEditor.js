@@ -11,6 +11,8 @@ const leftButton = document.getElementById("rotateLeftButton");
 const rightButton = document.getElementById("rotateRightButton");
 const flipVerticallyButton = document.getElementById("flipVerticallyButton");
 const flipHorizontallyButton = document.getElementById("flipHorizontallyButton");
+const grayFilter = document.getElementById("grayFilter");
+const binarizeFilter = document.getElementById("binarizeFilter");
 
 const saveButton = document.getElementById("saveBtn");
 
@@ -34,6 +36,8 @@ photo.addEventListener("load", function () {
 
 });
 
+binarizeFilter.addEventListener("click", function () { Binarize(); });
+grayFilter.addEventListener("click", function () { removeColors(); });
 flipVerticallyButton.addEventListener("click", function () { FlipVertically(); });
 flipHorizontallyButton.addEventListener("click", function () { FlipHorizontally(); });
 rightButton.addEventListener("click", function () { RotateRight(); });
@@ -150,38 +154,57 @@ function saveImage() {
 
 }
 
-
-
-function removeColors() {
-    var aImages = document.getElementsByClassName('grayscale'),
-        nImgsLen = aImages.length,
-        oCanvas = document.createElement('canvas'),
-        oCtx = oCanvas.getContext('2d');
-    for (var nWidth, nHeight, oImgData, oGrayImg, nPixel, aPix, nPixLen, nImgId = 0; nImgId < nImgsLen; nImgId++) {
-        oColorImg = aImages[nImgId];
-        nWidth = oColorImg.offsetWidth;
-        nHeight = oColorImg.offsetHeight;
-        oCanvas.width = nWidth;
-        oCanvas.height = nHeight;
-        oCtx.drawImage(oColorImg, 0, 0);
-        oImgData = oCtx.getImageData(0, 0, nWidth, nHeight);
-        aPix = oImgData.data;
-        nPixLen = aPix.length;
-        for (nPixel = 0; nPixel < nPixLen; nPixel += 4) {
-            aPix[nPixel + 2] = aPix[nPixel + 1] = aPix[nPixel] = (aPix[nPixel] + aPix[nPixel + 1] + aPix[nPixel + 2]) / 3;
-        }
-        oCtx.putImageData(oImgData, 0, 0);
-        oGrayImg = new Image();
-        oGrayImg.src = oCanvas.toDataURL();
-        oGrayImg.onmouseover = showColorImg;
-        oColorImg.onmouseout = showGrayImg;
-        oCtx.clearRect(0, 0, nWidth, nHeight);
-        oColorImg.style.display = "none";
-        oColorImg.parentNode.insertBefore(oGrayImg, oColorImg);
-    }
-
+function Binarize() {
+   
+    Binarization(120);
 }
 
+function removeColors() {
+    AssignNewCanvas();    
+    var oColorImg = photo;    
+    oCtx.drawImage(oColorImg, 0, 0, widthBox.value, heightBox.value);
+    var oImgData = oCtx.getImageData(0, 0, widthBox.value, heightBox.value);
+    var aPix = oImgData.data;
+    var nPixLen = aPix.length;
+    for (nPixel = 0; nPixel < nPixLen; nPixel += 4) {
+        aPix[nPixel + 2] = aPix[nPixel + 1] = aPix[nPixel] = (aPix[nPixel] + aPix[nPixel + 1] + aPix[nPixel + 2]) / 3;
+    }
+    oCtx.putImageData(oImgData, 0, 0);    
+    newPhoto.src = oCanvas.toDataURL();
+}
+
+    
+function Binarization(threshold) {
+    var im = photo;
+    AssignNewCanvas();
+    oCtx.drawImage(im, 0, 0);
+    var imData = oCtx.getImageData(0, 0, oCanvas.width, oCanvas.height)
+        , histogram = Array(256)
+        , i
+        , red
+        , green
+        , blue
+        , gray;
+    for (i = 0; i < 256; ++i)
+        histogram[i] = 0;
+    for (i = 0; i < imData.data.length; i += 4) {
+        red = imData.data[i];
+        blue = imData.data[i + 1];
+        green = imData.data[i + 2];
+        
+        gray = red * .2126 + green * .7152 + blue * .0722;
+        histogram[Math.round(gray)] += 1;
+    }    
+    console.log("threshold =%s", threshold);
+    for (i = 0; i < imData.data.length; i += 4) {
+        imData.data[i] = imData.data[i + 1] = imData.data[i + 2] =
+            imData.data[i] >= threshold ? 255 : 0;
+        
+        imData.data[i + 3] = 255;
+    }
+    oCtx.putImageData(imData, 0, 0);  
+    newPhoto.src = oCanvas.toDataURL("image/jpeg");  
+}
 function inRad(num) {
     return num * Math.PI / 180;
 }
