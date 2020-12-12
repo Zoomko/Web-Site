@@ -1,56 +1,50 @@
-//Холст и его контекст
 
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-//Поля ввода
 const widthBox = document.getElementById("widthBox");
 const heightBox = document.getElementById("heightBox");
 const topBox = document.getElementById("topBox");
 const leftBox = document.getElementById("leftBox");
 
+const leftButton = document.getElementById("rotateLeftButton");
+const rightButton = document.getElementById("rotateRightButton");
+
 const saveButton = document.getElementById("saveBtn");
 
 var photo = new Image();
+var newPhoto = new Image();
 
-photo.addEventListener("load", function () {
-    canvas.width = photo.width;
-    canvas.height = photo.height;
-    SetRectValues(photo.width, photo.height);
+var filters = new Map();
+
+var oCanvas;
+var oCtx;
+
+newPhoto.onload = function () {    
+    photo = newPhoto;     
     Draw();
-    //RotateLeft();
-    //RotateRight();
-         
-    
-})
+}
+photo.addEventListener("load", function () {
 
-saveButton.addEventListener("click", function () { saveImage(); })
+    SetRectValues(photo.width, photo.height);
+    AssignCanvasRectValues();
+    Draw();   
 
+});
 
-
-widthBox.addEventListener('change', OnChangeWidth, false);
-heightBox.addEventListener('change', OnChangeHeight, false);
+rightButton.addEventListener("click", function () { RotateRight(); });
+leftButton.addEventListener("click", function () { RotateLeft(); });
+saveButton.addEventListener("click", function () { saveImage(); });
+widthBox.addEventListener('change', OnChangeRect, false);
+heightBox.addEventListener('change', OnChangeRect, false);
 document.getElementById('files').addEventListener('change', onLoad , false);
 
 
-function SetRectValues(width, height) {
-    widthBox.value = width;
-    heightBox.value = height;
-}
 
-function Draw() {
-    ctx.drawImage(photo, 0, 0, widthBox.value,heightBox.value); 
-}
 
 
 //document.addEventListener("resize", function () { OnResize(); });
 
-
-
-//--------------------------------------------------------------------------------
-//--------------------------------------------------------------------------------
 
 function onLoad(e) {
     
@@ -79,32 +73,50 @@ function onLoad(e) {
     
 }
 
+function SetRectValues(width, height) {
+    widthBox.value = width;
+    heightBox.value = height;
 
-function OnChangeWidth() {
-    canvas.width = widthBox.value;    
+}
+
+function Draw() {
+    ctx.drawImage(photo, 0, 0, widthBox.value, heightBox.value);
+}
+
+function OnChangeRect() {
+    AssignCanvasRectValues();  
     Draw();
 }
 
-function OnChangeHeight() {
+function AssignCanvasRectValues() {
     canvas.height = heightBox.value;
-    Draw();
+    canvas.width = widthBox.value;   
 }
-
-function RotateLeft() {
-    canvas.width = photo.height;
-    canvas.height = photo.width;
-    ctx.rotate(inRad(-90));
-    ctx.translate(-photo.width, 0); 
-    photo = canvas.toDataURL("image/jpeg");
-    ctx.drawImage(photo, 0, 0); 
+function AssignNewCanvas() {
+    oCanvas = document.createElement('canvas');
+    oCtx = oCanvas.getContext('2d');
+    oCanvas.width = canvas.width;
+    oCanvas.height = canvas.height;
+}
+function RotateLeft() { 
+   
+    AssignNewCanvas();
+    SetRectValues(canvas.height, canvas.width);
+    AssignCanvasRectValues();    
+    oCtx.rotate(inRad(-90));
+    oCtx.translate(-oCanvas.height, 0);   
+    oCtx.drawImage(photo, 0, 0, widthBox.value, heightBox.value); 
+    newPhoto.src = oCanvas.toDataURL("image/jpeg"); 
+    
 }
 function RotateRight() {
-    canvas.width = photo.height;
-    canvas.height = photo.width;
-    ctx.rotate(inRad(90));    
-    ctx.translate(0, -photo.height);  
-    photo = canvas.toDataURL("image/jpeg");
-    ctx.drawImage(photo, 0, 0); 
+    AssignNewCanvas();
+    SetRectValues(canvas.height, canvas.width);
+    AssignCanvasRectValues();
+    oCtx.rotate(inRad(90));
+    oCtx.translate(0,-oCanvas.width);
+    oCtx.drawImage(photo, 0, 0, widthBox.value, heightBox.value);
+    newPhoto.src = oCanvas.toDataURL("image/jpeg");    
 }
 
 function inRad(num) {

@@ -7,40 +7,45 @@
     <title>Редактор</title>
     
 </head>
-<body>       
+<body>
 
-        
-        <div id="drop-area">
-            <form class="my-form">
-                <p>Загрузите изображения с помощью диалога выбора файлов или перетащив нужные изображения в выделенную область</p>
-                <input type="file" id="files" name="files[]">
-                <label class="button" for="fileElem">Выбрать изображения</label>
-            </form>
-        </div>
-        
-        <canvas id="canvas" class="canvas">
-                        
-        </canvas>
-                    
-        
-        <p>
-            <input type="number" name="widthBox" id="widthBox" value="100" min="100" title="Width">
-            ×
-            <input type="number" name="heightBox" id="heightBox" value="100" min="100" title="Height">
-        </p>
-        <p>
-            <label>Top: <input type="number" name="topBox" id="topBox" value="0" min="0" title="Top"> </label>
-        </p>
-        <p>
-            <label>Left: <input type="number" name="leftBox" id="leftBox" value="0" min="0" title="Left"></label>
-        </p>
-        <p>
-            <button class="button" id="saveBtn">Save</button>
-        </p>
-        <p>
-            <a href="photo.jpg" target="_blank" class="a a_hidden" id="newImg">Open new photo</a>
-        </p>                
-           
+
+    <div id="drop-area">
+        <form class="my-form">
+            <p>Загрузите изображения с помощью диалога выбора файлов или перетащив нужные изображения в выделенную область</p>
+            <input type="file" id="files" name="files[]">
+            <label class="button" for="fileElem">Выбрать изображения</label>
+        </form>
+    </div>
+
+    <canvas id="canvas" class="canvas">
+    </canvas>
+
+
+    <p>
+        <input type="number" name="widthBox" id="widthBox" value="100" min="100" title="Width">
+        ×
+        <input type="number" name="heightBox" id="heightBox" value="100" min="100" title="Height">
+    </p>
+    <p>
+        <label>Top: <input type="number" name="topBox" id="topBox" value="0" min="0" title="Top"> </label>
+    </p>
+    <p>
+        <label>Left: <input type="number" name="leftBox" id="leftBox" value="0" min="0" title="Left"></label>
+    </p>
+    <p>
+        <button class="button" id="rotateLeftButton">RotateLeft</button>
+    </p>
+    <p>
+        <button class="button" id="rotateRightButton">RotateRight</button>
+    </p>
+    <p>
+        <button class="button" id="saveBtn">Save</button>
+    </p>
+    <p>
+        <a href="photo.jpg" target="_blank" class="a a_hidden" id="newImg">Open new photo</a>
+    </p>
+
     <script src="photoEditor.js"></script>
 </body>
 </html>
