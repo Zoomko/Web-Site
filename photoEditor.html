@@ -20,43 +20,46 @@
 
     <canvas id="canvas" class="canvas">
     </canvas>
+    <div class="panel" id="panel">
+        <div>
+            <p style="font-size:30px; margin-left: 50px;">                
+                Resolution
+            </p>
+            <p style="margin-left: 50px;">
+                Width:&nbsp;
+                <input type="number" name="widthBox" id="widthBox" value="100" min="100" title="Width">
+            </p>
+            <p style="margin-left: 50px;">
+                Height:
+                <input type="number" name="heightBox" id="heightBox" value="100" min="100" title="Height">
+            </p>
+        </div>
+        <div class="separator">
+
+        </div>
+        <div class="puller"> </div>
+        <!--<div class="filterContainer">
+        <div class="close" id="qqqq">
+
+        </div>
+    </div>-->
+        <div class="select" id="selecter">
+            <select>
+                <option value="default" selected disabled hidden>Новый фильтр</option>
+                <option value="left">Поворот влево</option>
+                <option value="right">Поворот вправо</option>
+                <option value="vert">Отразить по вертикали</option>
+                <option value="hors">Отразить по горизонтали</option>
+                <option value="bw">Черно-белое</option>
+                <option value="bin">Бинаризация</option>
+            </select>
+        </div>
 
 
-    <p>
-        <input type="number" name="widthBox" id="widthBox" value="100" min="100" title="Width">
-        ×
-        <input type="number" name="heightBox" id="heightBox" value="100" min="100" title="Height">
-    </p>
-    <p>
-        <label>Top: <input type="number" name="topBox" id="topBox" value="0" min="0" title="Top"> </label>
-    </p>
-    <p>
-        <label>Left: <input type="number" name="leftBox" id="leftBox" value="0" min="0" title="Left"></label>
-    </p>
-    <p>
-        <button class="button" id="rotateLeftButton">RotateLeft</button>
-    </p>
-    <p>
-        <button class="button" id="rotateRightButton">RotateRight</button>
-    </p>
-    <p>
-        <button class="button" id="flipVerticallyButton">FlipVertically</button>
-    </p>
-    <p>
-        <button class="button" id="flipHorizontallyButton">FlipHorizontally</button>
-    </p>
-    <p>
-        <button class="button" id="grayFilter">Gray</button>
-    </p>
-    <p>
-        <button class="button" id="binarizeFilter">Binarize</button>
-    </p>
-    <p>
-        <button class="button" id="saveBtn">Save</button>
-    </p>
-    <p>
-        <a href="photo.jpg" target="_blank" class="a a_hidden" id="newImg">Open new photo</a>
-    </p>
+
+    </div>
+
+    
 
     <script src="photoEditor.js"></script>
 </body>

@@ -2,10 +2,12 @@
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
+const dragAndDropArea = document.getElementById("drop-area");
+
 const widthBox = document.getElementById("widthBox");
 const heightBox = document.getElementById("heightBox");
-const topBox = document.getElementById("topBox");
-const leftBox = document.getElementById("leftBox");
+
+const panel = document.getElementById("panel");
 
 const leftButton = document.getElementById("rotateLeftButton");
 const rightButton = document.getElementById("rotateRightButton");
@@ -13,6 +15,7 @@ const flipVerticallyButton = document.getElementById("flipVerticallyButton");
 const flipHorizontallyButton = document.getElementById("flipHorizontallyButton");
 const grayFilter = document.getElementById("grayFilter");
 const binarizeFilter = document.getElementById("binarizeFilter");
+const selecter = document.getElementById("selecter");
 
 const saveButton = document.getElementById("saveBtn");
 
@@ -24,18 +27,26 @@ var filters = new Map();
 var oCanvas;
 var oCtx;
 
+canvas.hidden = true;
+
 newPhoto.onload = function () {    
     photo = newPhoto;     
     Draw();
 }
 photo.addEventListener("load", function () {
-
+    dragAndDropArea.hidden = true;
+    canvas.hidden = false;
     SetRectValues(photo.width, photo.height);
     AssignCanvasRectValues();
     Draw();   
 
 });
 
+var startPositionOfPanel = panel.style.bottom;
+
+
+panel.addEventListener("mouseenter", function () { OpenPanel(); });
+panel.addEventListener("mouseleave", function () { ClosePanel(); });
 binarizeFilter.addEventListener("click", function () { Binarize(); });
 grayFilter.addEventListener("click", function () { removeColors(); });
 flipVerticallyButton.addEventListener("click", function () { FlipVertically(); });
@@ -76,6 +87,14 @@ function onLoad(e) {
     
 }
 
+function OpenPanel() {
+    console.log("Open");
+    panel.style.bottom = 0;
+}
+function ClosePanel() {
+    console.log("Close");
+    panel.style.bottom = startPositionOfPanel;
+}
 function SetRectValues(width, height) {
     widthBox.value = width;
     heightBox.value = height;
