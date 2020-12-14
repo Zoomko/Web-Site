@@ -32,7 +32,16 @@
                 <input type="number" name="heightBox" id="heightBox" value="100" min="100" title="Height">
             </p>
             <div style="display: flex;">
-                <input class="customButton" type="file" id="open" multiple />
+                <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+                <div class="example-2">
+                    <div class="form-group">
+                        <input type="file" name="file" id="file" class="input-file">
+                        <label for="file" class="btn btn-tertiary js-labelFile">
+                            <i class="icon fa fa-check"></i>
+                            <span class="js-fileName">Open</span>
+                        </label>
+                    </div>
+                </div>
                 <button class="customButton" id="save">Save</button>
             </div>
         </div>

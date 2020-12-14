@@ -22,10 +22,19 @@ const saveButton = document.getElementById("save");
 
 const filterList = document.getElementById("ulList");
 
+const file = document.getElementById("file");
+
+var binarizeValue = 100;
+
 const list = [];
 
 canvas.width = 0;
 canvas.height = 0;
+
+var startWidth;
+var startHeight;
+
+var first = true;
 
 var mainIndex = 0;
 
@@ -33,7 +42,7 @@ const infoAboutFilters = [
     new Info("Turn left", RotateLeft),
     new Info("Turn right", RotateRight),
     new Info("Flip vertical", FlipVertically),
-    new Info("Flip horizontal", FlipVertically),
+    new Info("Flip horizontal", FlipHorizontally),
     new Info("White-black", removeColors),
     new Info("Binarize", Binarize)
 ];
@@ -44,24 +53,19 @@ var newPhoto = new Image();
 
 var filters = [];
 
-var oCanvas;
-var oCtx;
+var oCanvas = document.createElement('canvas');
+var oCtx = oCanvas.getContext('2d');
 
 canvas.hidden = true;
 var startPositionOfPanel = panel.style.bottom;
 
-newPhoto.onload = function () {    
-    photo = newPhoto;         
-    mainIndex = mainIndex + 1;
+newPhoto.onload = function () {         
+    photo = newPhoto;          
+    mainIndex = mainIndex + 1;    
     InitList();
 }
 
-photo.addEventListener("load", function () {
-    dragAndDropArea.hidden = true;    
-    SetRectValues(photo.width, photo.height);
-    AssignCanvasRectValues();
-    Draw();   
-});
+photo.addEventListener("load", onPhotoLoaded);
 
 selector.addEventListener("change", function () { SelectFilter(); });
 panel.addEventListener("mouseenter", function () { OpenPanel(); });
@@ -75,9 +79,23 @@ dragAndDropArea.ondrop = DropFile;
 saveButton.addEventListener("click", function () { saveImage(); });
 widthBox.addEventListener('change', OnChangeRect, false);
 heightBox.addEventListener('change', OnChangeRect, false);
-document.getElementById('files').addEventListener('change', onLoad , false);
+file.addEventListener('input', onLoad, false);
+canvas.addEventListener('change', function () { console.log("CH"); });
 
+function DrawPic() {
+    ctx.drawImage(photo, 0, 0, widthBox.value, heightBox.value);
+}
 
+function onPhotoLoaded() {
+    console.log('1');
+    dragAndDropArea.hidden = true;         
+    SetRectValues(photo.width, photo.height);
+    AssignCanvasRectValues();
+    startWidth = canvas.width;
+    startHeight = canvas.height;    
+    DrawPic(); 
+    photo.removeEventListener("load", onPhotoLoaded);
+}
 
 function onLoad(e) {
     
@@ -88,8 +106,8 @@ function onLoad(e) {
 }
 function Load(file) {
     var fileReader = new FileReader();
-
-
+    
+    photo.addEventListener("load", onPhotoLoaded);
     fileReader.onload = (function (file) {
 
         return function (e) {
@@ -100,10 +118,8 @@ function Load(file) {
     })(file);
 
     if (file) {
-        fileReader.readAsDataURL(file);
-    } else {
-        photo.src = "";
-    }   
+        fileReader.readAsDataURL(file);        
+    }
 }
 function DropFile(e) {
     event.dataTransfer.dropEffect = "move"
@@ -124,24 +140,45 @@ function CreateNewFilter(index) {
     else {
         el = '<div class="filterContainer" id=' + index +'> <p style = "margin:5px;" >' + filterInfo.name + '</p >   <div class="close" id ="close">  </div> </div>';
     }
-    filterList.innerHTML += el; 
-    InitList();    
+    filterList.innerHTML += el;    
     document.querySelectorAll('.close').forEach(item => {
         item.addEventListener('click', CloseElement)
-        })            
+    })   
+    InitList();               
+}
+function changeBinarValue(e) {
+
+    binarizeValue = e.target.value;   
+    
+    InitList();
+    
 }
 function InitList() {    
-    if (mainIndex == 0) {
-        photo.src = startImage.src;
+    
+    if (mainIndex == 0) {                
+        photo.src = startImage.src;         
+        canvas.width = startWidth;
+        canvas.height = startHeight;
+        SetRectValues(startWidth, startHeight);
     }
-    if (mainIndex < filterList.children.length) {
-        console.log("true");
-        var number = filterList.children[mainIndex].getAttribute("id");
+    
+    if (mainIndex < filterList.children.length) {        
+        var number = filterList.children[mainIndex].getAttribute("id");        
         infoAboutFilters[number].fun();
     }
-    else {
-        mainIndex = 0;
-        Draw();
+    else {        
+        
+        mainIndex = 0;         
+        var bivValue = document.getElementById("value");
+        if (bivValue != null) {
+            bivValue.value = binarizeValue;
+            bivValue.onchange = changeBinarValue;
+        }
+        else {
+            binarizeValue = 100;
+        }
+        
+        DrawPic();
     }
     
 }
@@ -150,11 +187,11 @@ function CloseElement(e) {
     InitList();
 }
 function OpenPanel() {
-    console.log("Open");
+    
     panel.style.bottom = 0;
 }
 function ClosePanel() {
-    console.log("Close");
+    
     panel.style.bottom = startPositionOfPanel;
 }
 function SetRectValues(width, height) {
@@ -163,13 +200,9 @@ function SetRectValues(width, height) {
 
 }
 
-function Draw() {
-    ctx.drawImage(photo, 0, 0, widthBox.value, heightBox.value);
-}
-
 function OnChangeRect() {
     AssignCanvasRectValues();  
-    Draw();
+    DrawPic();
 }
 
 function AssignCanvasRectValues() {
@@ -177,25 +210,30 @@ function AssignCanvasRectValues() {
     canvas.width = widthBox.value;   
 }
 function AssignNewCanvas() {
+    
     oCanvas = document.createElement('canvas');
     oCtx = oCanvas.getContext('2d');
     oCanvas.width = canvas.width;
-    oCanvas.height = canvas.height;
+    oCanvas.height = canvas.height;   
+    
 }
 function RotateLeft() { 
-   
+    SetRectValues(canvas.height, canvas.width);    
     AssignNewCanvas();
-    SetRectValues(canvas.height, canvas.width);
     AssignCanvasRectValues();    
+    
+    
     oCtx.rotate(inRad(-90));
     oCtx.translate(-oCanvas.height, 0);   
     oCtx.drawImage(photo, 0, 0, widthBox.value, heightBox.value); 
+    
     newPhoto.src = oCanvas.toDataURL("image/jpeg"); 
+    
     
 }
 function RotateRight() {
-    AssignNewCanvas();
     SetRectValues(canvas.height, canvas.width);
+    AssignNewCanvas();    
     AssignCanvasRectValues();
     oCtx.rotate(inRad(90));
     oCtx.translate(0,-oCanvas.width);
@@ -237,7 +275,7 @@ function saveImage() {
 
 function Binarize() {
    
-    Binarization(120);
+    Binarization(binarizeValue);
 }
 
 function removeColors() {
@@ -258,7 +296,7 @@ function removeColors() {
 function Binarization(threshold) {
     var im = photo;
     AssignNewCanvas();
-    oCtx.drawImage(im, 0, 0);
+    oCtx.drawImage(im, 0, 0, widthBox.value, heightBox.value);
     var imData = oCtx.getImageData(0, 0, oCanvas.width, oCanvas.height)
         , histogram = Array(256)
         , i
@@ -276,7 +314,7 @@ function Binarization(threshold) {
         gray = red * .2126 + green * .7152 + blue * .0722;
         histogram[Math.round(gray)] += 1;
     }    
-    console.log("threshold =%s", threshold);
+    
     for (i = 0; i < imData.data.length; i += 4) {
         imData.data[i] = imData.data[i + 1] = imData.data[i + 2] =
             imData.data[i] >= threshold ? 255 : 0;
