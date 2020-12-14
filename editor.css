@@ -60,28 +60,32 @@ body {
     transition: all .2s linear;
 }
 .puller {
+    position:absolute;
     display: block;
     width: 30px;
     height: 5px;
     background: rgba(65,65,65,1);
-    top: 0;
-    margin: 10px auto;
+    top: 10px;
+    right:50%;
+    
 }
 
 input[type="number"] {
     border: 0px;
     color: rgba(180,180,180,1);
-    background: rgba(55,55,55,1);
+    background: none;
     font-size: large;
     width:100px;
     
 }
 .filterContainer {
-    position:relative;
-    width: 150px;
+    padding: .5rem .3rem .3rem .3rem;
+    position: relative;
+    width: 180px;
     height: 40px;
     border-radius: 10px;
     background: rgba(65,65,65,1);
+    margin: 10px;
 }
 
 .close {
@@ -119,18 +123,19 @@ input[type="number"] {
     position: relative;   
     font-family: 'Montserrat';
 }
-.select select {
-    margin-left:0px;
+.select select {    
     display: block;
     border: 0px;
-    width: 200px; /* от ширины блока div */
-    padding: .75rem 2.5rem .75rem 1rem; /* отступы от текста до рамки */
-    background: rgba(65,65,65,1); /* убираем фон */
-    border: 1px solid rgba(180,180,180,1); /* рамка */
-    border-radius: 3px; /* скругление полей формы */
-    -webkit-appearance: none; /* Chrome */
-    -moz-appearance: none; /* Firefox */
-    font-family: inherit; /* наследует от родителя */
+    width: 150px;
+    margin-top: 80px;
+    margin-left: 50px;
+    padding: .3rem .3rem .3rem .3rem;
+    background: rgba(65,65,65,1);
+    border: 1px solid rgba(180,180,180,1);
+    border-radius: 3px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    font-family: inherit;
     font-size: large;
     color: rgba(180,180,180,1);
 }
@@ -142,4 +147,42 @@ input[type="number"] {
     background: rgba(65,65,65,1);
     height: 80%;    
     border-radius: 1px;
+}
+.filterList {
+    overflow: auto;
+    max-height:200px;
+}
+.filterList li {
+    list-style-type: none;
+}
+::-webkit-scrollbar-button {
+    background-image: url('');
+    background-repeat: no-repeat;
+    width: 5px;
+    height: 0px
+}
+
+::-webkit-scrollbar-track {
+    background-color: rgba(65,65,65,1);
+}
+
+::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 0px;
+    border-radius: 0px;
+    background-color: rgba(180,180,180,1);
+}
+
+    ::-webkit-scrollbar-thumb:hover {
+        background-color: rgba(180,180,180,1);
+    }
+
+::-webkit-resizer {
+    background-image: url('');
+    background-repeat: no-repeat;
+    width: 4px;
+    height: 0px
+}
+
+::-webkit-scrollbar {
+    width: 4px;
 }

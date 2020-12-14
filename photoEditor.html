@@ -22,7 +22,7 @@
     </canvas>
     <div class="panel" id="panel">
         <div>
-            <p style="font-size:30px; margin-left: 50px;">                
+            <p style="font-size:30px; margin-left: 50px;">
                 Resolution
             </p>
             <p style="margin-left: 50px;">
@@ -34,18 +34,19 @@
                 <input type="number" name="heightBox" id="heightBox" value="100" min="100" title="Height">
             </p>
         </div>
-        <div class="separator">
-
+        <div class="separator"></div>
+        <div>
+            <p style="font-size:30px; margin-left: 50px; margin-bottom: 10px;">
+                Filters
+            </p>
+            <div class="filterList">
+                <ul id="ulList">
+                </ul>
+            </div>
         </div>
-        <div class="puller"> </div>
-        <!--<div class="filterContainer">
-        <div class="close" id="qqqq">
-
-        </div>
-    </div>-->
-        <div class="select" id="selecter">
-            <select>
-                <option value="default" selected disabled hidden>Новый фильтр</option>
+        <div class="select">
+            <select id="selector">
+                <option value="default" selected disabled hidden>New filter</option>
                 <option value="left">Поворот влево</option>
                 <option value="right">Поворот вправо</option>
                 <option value="vert">Отразить по вертикали</option>
@@ -55,11 +56,8 @@
             </select>
         </div>
 
-
-
-    </div>
-
-    
+        <div class="puller"> </div>
+    </div>   
 
     <script src="photoEditor.js"></script>
 </body>

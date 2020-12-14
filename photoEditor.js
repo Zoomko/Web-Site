@@ -1,3 +1,10 @@
+class Info {
+    constructor(name, fun) {
+        this.name = name;
+        this.fun = fun;
+    }
+}
+
 
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
@@ -9,30 +16,44 @@ const heightBox = document.getElementById("heightBox");
 
 const panel = document.getElementById("panel");
 
-const leftButton = document.getElementById("rotateLeftButton");
-const rightButton = document.getElementById("rotateRightButton");
-const flipVerticallyButton = document.getElementById("flipVerticallyButton");
-const flipHorizontallyButton = document.getElementById("flipHorizontallyButton");
-const grayFilter = document.getElementById("grayFilter");
-const binarizeFilter = document.getElementById("binarizeFilter");
-const selecter = document.getElementById("selecter");
+const selector = document.getElementById("selector");
 
 const saveButton = document.getElementById("saveBtn");
 
+const filterList = document.getElementById("ulList");
+
+const list = [];
+
+var mainIndex = 0;
+
+const infoAboutFilters = [
+    new Info("Turn left", RotateLeft),
+    new Info("Turn right", RotateRight),
+    new Info("Flip vertical", FlipVertically),
+    new Info("Flip horizontal", FlipVertically),
+    new Info("White-black", removeColors),
+    new Info("Binarize", Binarize)
+];
+
+var startImage = new Image();
 var photo = new Image();
 var newPhoto = new Image();
 
-var filters = new Map();
+var filters = [];
 
 var oCanvas;
 var oCtx;
 
 canvas.hidden = true;
+var startPositionOfPanel = panel.style.bottom;
 
 newPhoto.onload = function () {    
     photo = newPhoto;     
     Draw();
+    mainIndex = mainIndex + 1;
+    InitList();
 }
+
 photo.addEventListener("load", function () {
     dragAndDropArea.hidden = true;
     canvas.hidden = false;
@@ -42,18 +63,10 @@ photo.addEventListener("load", function () {
 
 });
 
-var startPositionOfPanel = panel.style.bottom;
-
-
+selector.addEventListener("change", function () { SelectFilter(); });
 panel.addEventListener("mouseenter", function () { OpenPanel(); });
 panel.addEventListener("mouseleave", function () { ClosePanel(); });
-binarizeFilter.addEventListener("click", function () { Binarize(); });
-grayFilter.addEventListener("click", function () { removeColors(); });
-flipVerticallyButton.addEventListener("click", function () { FlipVertically(); });
-flipHorizontallyButton.addEventListener("click", function () { FlipHorizontally(); });
-rightButton.addEventListener("click", function () { RotateRight(); });
-leftButton.addEventListener("click", function () { RotateLeft(); });
-saveButton.addEventListener("click", function () { saveImage(); });
+//saveButton.addEventListener("click", function () { saveImage(); });
 widthBox.addEventListener('change', OnChangeRect, false);
 heightBox.addEventListener('change', OnChangeRect, false);
 document.getElementById('files').addEventListener('change', onLoad , false);
@@ -72,7 +85,8 @@ function onLoad(e) {
     fileReader.onload = (function (file) {
 
         return function (e) {            
-            photo.src = fileReader.result;            
+            startImage.src = fileReader.result;  
+            photo.src= fileReader.result;
         };
 
     })(file);
@@ -81,12 +95,49 @@ function onLoad(e) {
         fileReader.readAsDataURL(file);
     } else {
         photo.src = "";
-    }
-
-    
-    
+    }   
 }
 
+function SelectFilter() {        
+    CreateNewFilter(selector.selectedIndex-1);
+    selector.selectedIndex = 0;
+}
+function CreateNewFilter(index) {
+    var filterInfo = infoAboutFilters[index];
+    var el = '';
+    if (index == 5) {
+        el = '<div class="filterContainer" id='+index+'><p style = "margin:0px;" >' + filterInfo.name + '</p> <p style="margin:2px; font-size: 12px;"> Value: &nbsp;<input type="number" id="value" value="100" min="0" max="255" style = "font-size: 12px;"> </p><div class="close" id ="close"> </div> </div>'
+    }
+    else {
+        el = '<div class="filterContainer" id=' + index +'> <p style = "margin:5px;" >' + filterInfo.name + '</p >   <div class="close" id ="close">  </div> </div>';
+    }
+    filterList.innerHTML += el; 
+    InitList();
+    //var last = filterList.lastElementChild;    
+    //var closeEl = last.getElementsByClassName("close")[0];   
+    //var filter = new Filter(index, last, closeEl);
+    document.querySelectorAll('.close').forEach(item => {
+        item.addEventListener('click', CloseElement)
+        })  
+    //filters.push(filter);        
+}
+function InitList() {    
+    if (mainIndex == 0) {
+        photo.src = startImage.src;
+    }
+    if (mainIndex < filterList.children.length) {
+        console.log("true");
+        var number = filterList.children[mainIndex].getAttribute("id");
+        infoAboutFilters[number].fun();
+    }
+    else
+        mainIndex = 0;    
+    
+}
+function CloseElement(e) {  
+    filterList.removeChild(e.target.parentElement);      
+    InitList();
+}
 function OpenPanel() {
     console.log("Open");
     panel.style.bottom = 0;
