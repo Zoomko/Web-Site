@@ -24,6 +24,9 @@ const filterList = document.getElementById("ulList");
 
 const list = [];
 
+canvas.width = 0;
+canvas.height = 0;
+
 var mainIndex = 0;
 
 const infoAboutFilters = [
@@ -48,24 +51,27 @@ canvas.hidden = true;
 var startPositionOfPanel = panel.style.bottom;
 
 newPhoto.onload = function () {    
-    photo = newPhoto;     
-    Draw();
+    photo = newPhoto;         
     mainIndex = mainIndex + 1;
     InitList();
 }
 
 photo.addEventListener("load", function () {
-    dragAndDropArea.hidden = true;
-    canvas.hidden = false;
+    dragAndDropArea.hidden = true;    
     SetRectValues(photo.width, photo.height);
     AssignCanvasRectValues();
     Draw();   
-
 });
 
 selector.addEventListener("change", function () { SelectFilter(); });
 panel.addEventListener("mouseenter", function () { OpenPanel(); });
 panel.addEventListener("mouseleave", function () { ClosePanel(); });
+dragAndDropArea.ondragover = function (event) {
+    event.dataTransfer.dropEffect = "move"
+    event.returnValue = false;
+    return;
+} 
+dragAndDropArea.ondrop = DropFile;
 //saveButton.addEventListener("click", function () { saveImage(); });
 widthBox.addEventListener('change', OnChangeRect, false);
 heightBox.addEventListener('change', OnChangeRect, false);
@@ -78,15 +84,17 @@ function onLoad(e) {
     var files = e.target.files;
     var file = files[0];
 
-    
+    Load(file);  
+}
+function Load(file) {
     var fileReader = new FileReader();
-    
+
 
     fileReader.onload = (function (file) {
 
-        return function (e) {            
-            startImage.src = fileReader.result;  
-            photo.src= fileReader.result;
+        return function (e) {
+            startImage.src = fileReader.result;
+            photo.src = fileReader.result;
         };
 
     })(file);
@@ -97,7 +105,12 @@ function onLoad(e) {
         photo.src = "";
     }   
 }
-
+function DropFile(e) {
+    event.dataTransfer.dropEffect = "move"
+    var files = e.dataTransfer.files;
+    event.returnValue = false;    
+    Load(files[0]); 
+}
 function SelectFilter() {        
     CreateNewFilter(selector.selectedIndex-1);
     selector.selectedIndex = 0;
@@ -112,14 +125,10 @@ function CreateNewFilter(index) {
         el = '<div class="filterContainer" id=' + index +'> <p style = "margin:5px;" >' + filterInfo.name + '</p >   <div class="close" id ="close">  </div> </div>';
     }
     filterList.innerHTML += el; 
-    InitList();
-    //var last = filterList.lastElementChild;    
-    //var closeEl = last.getElementsByClassName("close")[0];   
-    //var filter = new Filter(index, last, closeEl);
+    InitList();    
     document.querySelectorAll('.close').forEach(item => {
         item.addEventListener('click', CloseElement)
-        })  
-    //filters.push(filter);        
+        })            
 }
 function InitList() {    
     if (mainIndex == 0) {
@@ -130,8 +139,10 @@ function InitList() {
         var number = filterList.children[mainIndex].getAttribute("id");
         infoAboutFilters[number].fun();
     }
-    else
-        mainIndex = 0;    
+    else {
+        mainIndex = 0;
+        Draw();
+    }
     
 }
 function CloseElement(e) {  
