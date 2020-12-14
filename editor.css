@@ -1,10 +1,13 @@
 #drop-area {
     border: 2px dashed #ccc;
     border-radius: 20px;
-    width: 560px;
+    width: 80%;
     font-family: sans-serif;
     margin: 100px auto;
-    padding: 40px;
+    padding-top: 300px;
+    padding-bottom: 300px;
+    padding-left:100px;
+    padding-right:100px;
     border-color: rgba(180,180,180,1);
 }
 p {
@@ -36,14 +39,7 @@ body {
     vertical-align: middle;
 }
 
-.button {
-    display: inline-block;
-    padding: 10px;
-    background: #ccc;
-    cursor: pointer;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-}
+
 .canvas {
     display: block;
     margin: 100px auto;
@@ -123,6 +119,48 @@ input[type="number"] {
     position: relative;   
     font-family: 'Montserrat';
 }
+.input__file {
+    opacity: 0;
+    visibility: hidden;
+    position: absolute;
+}
+.input__wrapper {
+    width: 100%;
+    position: relative;
+    margin: 15px 0;
+    text-align: center;
+}
+
+
+.customButton {
+    display: block;
+    border: 0px;
+    width: 70px;
+    height: 40px;
+    margin-top: 30px;
+    margin-left: 50px;
+    background: rgba(65,65,65,1);
+    border: 1px solid rgba(180,180,180,1);
+    border-radius: 3px;
+    font-family: inherit;
+    font-size: large;
+    color: rgba(180,180,180,1);
+}
+.customButton input{
+    display: block;
+    border: 0px;
+    width: 70px;
+    height: 40px;
+    margin-top: 30px;
+    margin-left: 50px;
+    
+    
+   
+    font-family: inherit;
+    font-size: large;
+    color: rgba(180,180,180,1);
+}
+
 .select select {    
     display: block;
     border: 0px;

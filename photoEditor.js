@@ -18,7 +18,7 @@ const panel = document.getElementById("panel");
 
 const selector = document.getElementById("selector");
 
-const saveButton = document.getElementById("saveBtn");
+const saveButton = document.getElementById("save");
 
 const filterList = document.getElementById("ulList");
 
@@ -72,7 +72,7 @@ dragAndDropArea.ondragover = function (event) {
     return;
 } 
 dragAndDropArea.ondrop = DropFile;
-//saveButton.addEventListener("click", function () { saveImage(); });
+saveButton.addEventListener("click", function () { saveImage(); });
 widthBox.addEventListener('change', OnChangeRect, false);
 heightBox.addEventListener('change', OnChangeRect, false);
 document.getElementById('files').addEventListener('change', onLoad , false);

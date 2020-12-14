@@ -12,9 +12,7 @@
 
     <div id="drop-area">
         <form class="my-form">
-            <p>Загрузите изображения с помощью диалога выбора файлов или перетащив нужные изображения в выделенную область</p>
-            <input type="file" id="files" name="files[]">
-            <label class="button" for="fileElem">Выбрать изображения</label>
+            <p style="font-size:70px; text-align:center;">Drop image here</p>                     
         </form>
     </div>
 
@@ -33,6 +31,10 @@
                 Height:
                 <input type="number" name="heightBox" id="heightBox" value="100" min="100" title="Height">
             </p>
+            <div style="display: flex;">
+                <input class="customButton" type="file" id="open" multiple />
+                <button class="customButton" id="save">Save</button>
+            </div>
         </div>
         <div class="separator"></div>
         <div>
